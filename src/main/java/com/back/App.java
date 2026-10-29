@@ -2,23 +2,21 @@ package com.back;
 
 import com.back.domain.system.controller.SystemController;
 import com.back.domain.wiseSaying.controller.WiseSayingController;
-import com.back.domain.wiseSaying.repository.WiseSayingRepository;
-import com.back.domain.wiseSaying.service.WiseSayingService;
 
 import java.util.Scanner;
 
 public class App {
 
     public void run() {
-        try (Scanner sc = new Scanner(System.in)) {
-            WiseSayingRepository repository = new WiseSayingRepository();
-            WiseSayingService service = new WiseSayingService(repository);
+        Scanner sc = AppContext.getScanner();
 
-            WiseSayingController wiseSayingController =
-                    new WiseSayingController(sc, service);
+        WiseSayingController wiseSayingController =
+                AppContext.getWiseSayingController();
 
-            SystemController systemController = new SystemController();
+        SystemController systemController =
+                AppContext.getSystemController();
 
+        try {
             System.out.println("== 명언 앱 ==");
 
             while (true) {
@@ -43,6 +41,8 @@ public class App {
                     }
                 }
             }
+        } finally {
+            sc.close();
         }
     }
 }
